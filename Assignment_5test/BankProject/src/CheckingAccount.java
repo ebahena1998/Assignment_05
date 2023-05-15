@@ -1,0 +1,25 @@
+package src;
+
+import src.ExtraExceptions.AccountClosedException;
+import src.ExtraExceptions.InsufficientBalanceException;
+
+public class CheckingAccount extends Account{
+    //Allows customer to withdraw more than the account balance
+    //Negative balance is the overdraft limit;
+    private double overdraft;
+    public CheckingAccount(Person customer, int Id, double overdraft){
+        super(customer, Id, "(Checking)");
+        this.overdraft = overdraft;
+    }
+
+    public void withdraw(double amount) throws InsufficientBalanceException, AccountClosedException {
+        if(getBalance() + overdraft - amount < 0) {
+            throw new InsufficientBalanceException(String.format("Withdraw failed, the balance is: %.2f%n%n",
+                    super.getBalance()));
+        }
+
+        super.withdraw(amount);
+    }
+
+
+}
